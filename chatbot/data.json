@@ -1,27 +1,32 @@
 {
-  "name": "John Doe",
+  "name": "Hafiz",
   "role": "Frontend Developer",
 
   "skills": [
     "HTML",
     "CSS",
     "JavaScript",
-    "React"
+    "React",
+    "Tailwind CSS"
   ],
 
   "projects": [
     {
-      "name": "E-Commerce Website",
-      "description": "Built with JavaScript and local storage."
+      "name": "Portfolio Website",
+      "description": "Personal portfolio website."
     },
     {
-      "name": "Task Manager",
-      "description": "A simple productivity web app."
+      "name": "Task Manager App",
+      "description": "Task tracking web application."
+    },
+    {
+      "name": "Weather Dashboard",
+      "description": "Weather app using public APIs."
     }
   ],
 
   "contact": {
-    "email": "john@example.com",
-    "github": "github.com/johndoe"
+    "email": "hafiz@example.com",
+    "github": "github.com/hafiz"
   }
 }

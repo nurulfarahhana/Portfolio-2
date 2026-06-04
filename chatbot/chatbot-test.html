@@ -1,192 +1,535 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Chatbot</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio Chatbot</title>
+
 <style>
-    * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
 }
 
-body {
-    background: #0f172a;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+body{
+    background:#0f172a;
+    color:white;
+    min-height:100vh;
 }
 
-
-.chat-container {
-    width: 400px;
-    height: 600px;
-    background: #1e293b;
-    border-radius: 12px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+/* Demo portfolio content */
+.hero{
+    padding:80px 10%;
 }
 
-.chat-header {
-    background: #334155;
-    color: white;
-    padding: 16px;
-    font-weight: bold;
+.hero h1{
+    font-size:3rem;
 }
 
-.chat-box {
-    flex: 1;
-    padding: 16px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.hero p{
+    margin-top:15px;
+    color:#cbd5e1;
 }
 
-.user-message {
-    align-self: flex-end;
-    background: #3b82f6;
-    color: white;
-    padding: 10px;
-    border-radius: 12px;
-    max-width: 75%;
+/* Floating Avatar */
+#chat-toggle{
+    position:fixed;
+    bottom:25px;
+    right:25px;
+
+    width:65px;
+    height:65px;
+
+    border-radius:50%;
+    background:#3b82f6;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:30px;
+    cursor:pointer;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.3);
+
+    z-index:999;
+    animation:bounce 2s infinite;
 }
 
-.bot-message {
-    align-self: flex-start;
-    background: #475569;
-    color: white;
-    padding: 10px;
-    border-radius: 12px;
-    max-width: 75%;
+@keyframes bounce{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-8px);
+    }
 }
 
-.input-container {
-    display: flex;
-    padding: 10px;
-    background: #334155;
+/* Chat Widget */
+#chat-widget{
+    position:fixed;
+    right:25px;
+    bottom:100px;
+
+    width:360px;
+    height:520px;
+
+    background:#1e293b;
+    border-radius:18px;
+
+    overflow:hidden;
+
+    display:flex;
+    flex-direction:column;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.4);
+
+    z-index:999;
 }
 
-#user-input {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    outline: none;
-    border-radius: 8px;
+.hidden{
+    display:none !important;
 }
 
-#send-btn {
-    margin-left: 10px;
-    padding: 10px 15px;
-    border: none;
-    background: #3b82f6;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
+.chat-header{
+    background:#334155;
+    padding:15px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    font-weight:bold;
+}
+
+.chat-header button{
+    background:none;
+    border:none;
+    color:white;
+    cursor:pointer;
+    font-size:18px;
+}
+
+#chat-box{
+    flex:1;
+    overflow-y:auto;
+    padding:15px;
+
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.bot-message,
+.user-message{
+    padding:12px;
+    border-radius:12px;
+    max-width:80%;
+    line-height:1.4;
+}
+
+.bot-message{
+    background:#475569;
+    align-self:flex-start;
+}
+
+.user-message{
+    background:#2563eb;
+    align-self:flex-end;
+}
+
+.chat-input{
+    display:flex;
+    padding:10px;
+    gap:10px;
+    background:#334155;
+}
+
+.chat-input input{
+    flex:1;
+    border:none;
+    border-radius:8px;
+    padding:10px;
+    outline:none;
+}
+
+.chat-input button{
+    border:none;
+    background:#3b82f6;
+    color:white;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#chat-toggle img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
+}
+
+.quick-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:10px;
+}
+
+.quick-buttons button{
+    border:none;
+    background:#3b82f6;
+    color:white;
+    padding:8px 12px;
+    border-radius:20px;
+    cursor:pointer;
+    font-size:12px;
+}
+
+#mode-switch{
+    background:#0f172a;
+    color:white;
+    border:1px solid #334155;
+    border-radius:6px;
+    padding:4px;
+    font-size:12px;
+}
+
+#speak-btn{
+    margin-left:8px;
+    background:#3b82f6;
+    border:none;
+    color:white;
+    border-radius:6px;
+    padding:5px 8px;
+    cursor:pointer;
+}
+
+/* blink animation for avatar */
+@keyframes blink {
+    0%, 97%, 100% { transform: scale(1); }
+    98% { transform: scale(0.92); }
+    99% { transform: scale(1.05); }
+}
+
+.blink {
+    animation: blink 4s infinite;
 }
 </style>
+</head>
 <body>
 
-    <div class="chat-container">
-        <div class="chat-header">
-            Portfolio Assistant
-        </div>
+<section class="hero">
+    <h1>Hello, I'm Farah 👋</h1>
+    <p>
+        Frontend Developer passionate about creating
+        beautiful web experiences.
+    </p>
+</section>
 
-        <div id="chat-box" class="chat-box">
-            <div class="bot-message">
-                Hi! Ask me about my skills, projects, or contact information.
+<!-- Floating Button -->
+<div id="chat-toggle">
+    <img src="asset/avatar.jpg"  alt="Hunn">
+</div>
+
+<!-- Chat Widget -->
+<div id="chat-widget" class="hidden">
+
+    <div class="chat-header">
+        <span>Hunn The Assistant ☺️</span>
+        <button id="close-chat">✕</button>
+
+        <select id="mode-switch">
+            <option value="cute">Cute 🤍</option>
+            <option value="sarcastic">Sarcastic 😏</option>
+            <option value="pro">Pro 👔</option>
+        </select>
+
+        <button id="speak-btn">🔊</button>
+    </div>
+
+    <div id="chat-box">
+
+        <div class="bot-message">
+            Hi, I am Hunn👋 Ask me about skills, projects, or contact info.
+
+            <div class="quick-buttons">
+                <button onclick="quickAsk('skills')">Skills</button>
+                <button onclick="quickAsk('projects')">Projects</button>
+                <button onclick="quickAsk('contact')">Contact</button>
             </div>
         </div>
 
-        <div class="input-container">
-            <input
-                type="text"
-                id="user-input"
-                placeholder="Type a message..."
-            >
-            <button id="send-btn">Send</button>
-        </div>
     </div>
 
-    <script src="script.js"></script>
+    <div class="chat-input">
+        <input
+            id="user-input"
+            type="text"
+            placeholder="Ask something..."
+        >
 
-    <script>
-        let portfolioData;
+        <button id="send-btn">
+            Send
+        </button>
+    </div>
 
-        fetch("data.json")
-            .then(response => response.json())
-            .then(data => {
-                portfolioData = data;
-            });
+</div>
 
-        const input = document.getElementById("user-input");
-        const sendBtn = document.getElementById("send-btn");
-        const chatBox = document.getElementById("chat-box");
+<script>
 
-        function addMessage(message, className) {
-            const div = document.createElement("div");
-            div.classList.add(className);
-            div.textContent = message;
+let portfolioData = null;
 
-            chatBox.appendChild(div);
-            chatBox.scrollTop = chatBox.scrollHeight;
+/* Load JSON */
+fetch("data.json")
+.then(res => res.json())
+.then(data => {
+    portfolioData = data;
+    autoGreet();
+});
+
+/* Elements */
+const chatToggle = document.getElementById("chat-toggle");
+const chatWidget = document.getElementById("chat-widget");
+const closeChat = document.getElementById("close-chat");
+
+const chatBox = document.getElementById("chat-box");
+const input = document.getElementById("user-input");
+const sendBtn = document.getElementById("send-btn");
+
+/* Open / Close */
+chatToggle.addEventListener("click", () => {
+    chatWidget.classList.toggle("hidden");
+});
+
+closeChat.addEventListener("click", () => {
+    chatWidget.classList.add("hidden");
+});
+
+/* Message UI */
+function addMessage(text, type){
+
+    const div = document.createElement("div");
+
+    div.className =
+        type === "user"
+        ? "user-message"
+        : "bot-message";
+
+    div.textContent = text;
+
+    chatBox.appendChild(div);
+
+    chatBox.scrollTop =
+        chatBox.scrollHeight;
+}
+
+/* Bot Logic */
+function getResponse(message){
+
+    const msg = message.toLowerCase().trim();
+
+    // helper: safe access
+    const skills = portfolioData?.skills || [];
+    const projects = portfolioData?.projects || [];
+    const contact = portfolioData?.contact || {};
+
+    // ===== GREETING / SMALL TALK =====
+    if(msg.match(/hi|hello|hey/)){
+        return applyMode("Hello! I'm Hunn 🤍 How can I help you?");
+    }
+
+    if(msg.includes("how are you")){
+        return applyMode("I'm doing great inside this portfolio 😄 How about you?");
+    }
+
+    // ===== SKILLS =====
+    if(msg.match(/skill|stack|tech|technology/)){
+        return applyMode(
+            `My skills are:\n${skills.join(", ")}`
+        );
+    }
+
+    // ===== PROJECTS =====
+    if(msg.match(/project|work|portfolio|built/)){
+
+        return applyMode(
+            "Here are my projects:\n" +
+            projects.map(p => `• ${p.name}`).join("\n")
+        );
+    }
+
+    // ===== CONTACT =====
+    if(msg.match(/contact|email|reach|hire/)){
+        return applyMode(
+            `You can reach me at: ${contact.email}`
+        );
+    }
+
+    // ===== NAME =====
+    if(msg.match(/your name|who are you/)){
+        return applyMode(
+            `I'm Hunn 🤍, the portfolio assistant of ${portfolioData.name}`
+        );
+    }
+
+    // ===== ROLE =====
+    if(msg.match(/role|job|work as|what do you do/)){
+        return applyMode(
+            `${portfolioData.name} works as a ${portfolioData.role}`
+        );
+    }
+
+    // ===== SMART PROJECT FILTER (NEW) =====
+    if(msg.includes("javascript")){
+        const filtered = projects.filter(p =>
+            (p.description || "").toLowerCase().includes("javascript")
+        );
+
+        return applyMode(
+            filtered.length
+            ? "JavaScript projects:\n" + filtered.map(p => "• " + p.name).join("\n")
+            : "No specific JavaScript-tagged projects found."
+        );
+    }
+
+    // ===== DEFAULT FALLBACK (IMPROVED) =====
+    return applyMode(
+        "I didn’t fully understand that 🤍\nTry asking about:\n• Skills\n• Projects\n• Contact\n• Role"
+    );
+}
+
+/* Send */
+function sendMessage(){
+
+    const text = input.value.trim();
+
+    if(!text) return;
+
+    const lower = text.toLowerCase();
+
+    if(lower.includes("my name is")){
+        const name = text.split("is")[1]?.trim();
+        memory.name = name;
+        localStorage.setItem("hunn_memory", JSON.stringify(memory));
+    }
+
+    addMessage(text,"user");
+    input.value = "";
+
+    setTimeout(() => {
+        addMessage(
+            getResponse(text),
+            "bot"
+        );
+    },500);
+}
+
+/* Quick Buttons */
+function quickAsk(text){
+
+    input.value = text;
+    sendMessage();
+}
+
+sendBtn.addEventListener(
+    "click",
+    sendMessage
+);
+
+input.addEventListener(
+    "keypress",
+    e => {
+        if(e.key === "Enter"){
+            sendMessage();
+        }
+    }
+);
+
+let memory = JSON.parse(localStorage.getItem("hunn_memory")) || {
+    name: null,
+    lastChat: null
+};
+
+let mode = "cute";
+
+function autoGreet(){
+
+    const hour = new Date().getHours();
+
+    let greet = "";
+
+    if(hour < 12) greet = "Good morning ☀️";
+    else if(hour < 18) greet = "Good afternoon 🌤️";
+    else greet = "Good evening 🌙";
+
+    setTimeout(() => {
+
+        let text = "";
+
+        if(memory.name){
+            text = `${greet} ${memory.name} 👋\nI'm Hunn, welcome back!`;
+        } else {
+            text = `${greet} 👋\nI'm Hunn, nice to meet you!`;
         }
 
-        function getBotResponse(message) {
-            message = message.toLowerCase();
+        addMessage(text, "bot");
 
-            if (message.includes("skill")) {
-                return `My skills are: ${portfolioData.skills.join(", ")}`;
-            }
+    }, 800);
+}
 
-            if (message.includes("project")) {
-                return portfolioData.projects
-                    .map(project => project.name)
-                    .join(", ");
-            }
+function applyMode(text){
 
-            if (message.includes("contact") || message.includes("email")) {
-                return portfolioData.contact.email;
-            }
+    if(mode === "cute"){
+        return text + " 🤍";
+    }
 
-            if (message.includes("name")) {
-                return `My name is ${portfolioData.name}`;
-            }
+    if(mode === "sarcastic"){
+        return text + " ...obviously 😏";
+    }
 
-            return "I can answer questions about skills, projects, and contact information.";
-        }
+    if(mode === "pro"){
+        return text;
+    }
 
-        function sendMessage() {
-            const message = input.value.trim();
+    return text;
+}
 
-            if (!message) return;
+document.getElementById("mode-switch")
+.addEventListener("change", (e) => {
+    mode = e.target.value;
+});
 
-            addMessage(message, "user-message");
+document.getElementById("speak-btn")
+.addEventListener("click", () => {
 
-            const reply = getBotResponse(message);
+    const last = chatBox.lastElementChild;
 
-            setTimeout(() => {
-                addMessage(reply, "bot-message");
-            }, 500);
+    if(!last) return;
 
-            input.value = "";
-        }
+    const msg = new SpeechSynthesisUtterance(
+        last.textContent
+    );
 
-        sendBtn.addEventListener("click", sendMessage);
+    msg.rate = 1;
+    msg.pitch = 1;
 
-        input.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") {
-                sendMessage();
-            }
-        });
-    </script>
+    speechSynthesis.speak(msg);
+});
+
+setInterval(() => {
+    document.getElementById("chat-toggle")
+    .classList.add("blink");
+
+    setTimeout(() => {
+        document.getElementById("chat-toggle")
+        .classList.remove("blink");
+    }, 500);
+
+}, 5000);
+</script>
 
 </body>
 </html>
