@@ -1,0 +1,27 @@
+{
+  "name": "John Doe",
+  "role": "Frontend Developer",
+
+  "skills": [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "React"
+  ],
+
+  "projects": [
+    {
+      "name": "E-Commerce Website",
+      "description": "Built with JavaScript and local storage."
+    },
+    {
+      "name": "Task Manager",
+      "description": "A simple productivity web app."
+    }
+  ],
+
+  "contact": {
+    "email": "john@example.com",
+    "github": "github.com/johndoe"
+  }
+}

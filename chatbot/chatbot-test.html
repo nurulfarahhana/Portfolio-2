@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Chatbot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #0f172a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+.chat-container {
+    width: 400px;
+    height: 600px;
+    background: #1e293b;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    background: #334155;
+    color: white;
+    padding: 16px;
+    font-weight: bold;
+}
+
+.chat-box {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-message {
+    align-self: flex-end;
+    background: #3b82f6;
+    color: white;
+    padding: 10px;
+    border-radius: 12px;
+    max-width: 75%;
+}
+
+.bot-message {
+    align-self: flex-start;
+    background: #475569;
+    color: white;
+    padding: 10px;
+    border-radius: 12px;
+    max-width: 75%;
+}
+
+.input-container {
+    display: flex;
+    padding: 10px;
+    background: #334155;
+}
+
+#user-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+}
+
+#send-btn {
+    margin-left: 10px;
+    padding: 10px 15px;
+    border: none;
+    background: #3b82f6;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+</style>
+<body>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            Portfolio Assistant
+        </div>
+
+        <div id="chat-box" class="chat-box">
+            <div class="bot-message">
+                Hi! Ask me about my skills, projects, or contact information.
+            </div>
+        </div>
+
+        <div class="input-container">
+            <input
+                type="text"
+                id="user-input"
+                placeholder="Type a message..."
+            >
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script>
+        let portfolioData;
+
+        fetch("data.json")
+            .then(response => response.json())
+            .then(data => {
+                portfolioData = data;
+            });
+
+        const input = document.getElementById("user-input");
+        const sendBtn = document.getElementById("send-btn");
+        const chatBox = document.getElementById("chat-box");
+
+        function addMessage(message, className) {
+            const div = document.createElement("div");
+            div.classList.add(className);
+            div.textContent = message;
+
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function getBotResponse(message) {
+            message = message.toLowerCase();
+
+            if (message.includes("skill")) {
+                return `My skills are: ${portfolioData.skills.join(", ")}`;
+            }
+
+            if (message.includes("project")) {
+                return portfolioData.projects
+                    .map(project => project.name)
+                    .join(", ");
+            }
+
+            if (message.includes("contact") || message.includes("email")) {
+                return portfolioData.contact.email;
+            }
+
+            if (message.includes("name")) {
+                return `My name is ${portfolioData.name}`;
+            }
+
+            return "I can answer questions about skills, projects, and contact information.";
+        }
+
+        function sendMessage() {
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            addMessage(message, "user-message");
+
+            const reply = getBotResponse(message);
+
+            setTimeout(() => {
+                addMessage(reply, "bot-message");
+            }, 500);
+
+            input.value = "";
+        }
+
+        sendBtn.addEventListener("click", sendMessage);
+
+        input.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                sendMessage();
+            }
+        });
+    </script>
+
+</body>
+</html>
