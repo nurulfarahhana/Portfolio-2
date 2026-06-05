@@ -3,9 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Portfolio Chatbot</title>
 
 <style>
+
+/* ================= BASE ================= */
 *{
     margin:0;
     padding:0;
@@ -19,7 +22,7 @@ body{
     min-height:100vh;
 }
 
-/* Demo portfolio content */
+/* ================= HERO ================= */
 .hero{
     padding:80px 10%;
 }
@@ -33,135 +36,28 @@ body{
     color:#cbd5e1;
 }
 
-/* Floating Avatar */
+/* ================= FLOAT BUTTON ================= */
 #chat-toggle{
     position:fixed;
-    bottom:25px;
-    right:25px;
+    bottom:20px;
+    right:20px;
 
     width:65px;
     height:65px;
 
     border-radius:50%;
+    overflow:hidden;
+
     background:#3b82f6;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    font-size:30px;
     cursor:pointer;
-
-    box-shadow:0 8px 25px rgba(0,0,0,.3);
-
     z-index:999;
+
     animation:bounce 2s infinite;
-}
-
-@keyframes bounce{
-    0%,100%{
-        transform:translateY(0);
-    }
-    50%{
-        transform:translateY(-8px);
-    }
-}
-
-/* Chat Widget */
-#chat-widget{
-    position:fixed;
-    right:25px;
-    bottom:100px;
-
-    width:360px;
-    height:520px;
-
-    background:#1e293b;
-    border-radius:18px;
-
-    overflow:hidden;
-
-    display:flex;
-    flex-direction:column;
-
-    box-shadow:0 15px 35px rgba(0,0,0,.4);
-
-    z-index:999;
-}
-
-.hidden{
-    display:none !important;
-}
-
-.chat-header{
-    background:#334155;
-    padding:15px;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    font-weight:bold;
-}
-
-.chat-header button{
-    background:none;
-    border:none;
-    color:white;
-    cursor:pointer;
-    font-size:18px;
-}
-
-#chat-box{
-    flex:1;
-    overflow-y:auto;
-    padding:15px;
-
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-}
-
-.bot-message,
-.user-message{
-    padding:12px;
-    border-radius:12px;
-    max-width:80%;
-    line-height:1.4;
-}
-
-.bot-message{
-    background:#475569;
-    align-self:flex-start;
-}
-
-.user-message{
-    background:#2563eb;
-    align-self:flex-end;
-}
-
-.chat-input{
-    display:flex;
-    padding:10px;
-    gap:10px;
-    background:#334155;
-}
-
-.chat-input input{
-    flex:1;
-    border:none;
-    border-radius:8px;
-    padding:10px;
-    outline:none;
-}
-
-.chat-input button{
-    border:none;
-    background:#3b82f6;
-    color:white;
-    padding:10px 15px;
-    border-radius:8px;
-    cursor:pointer;
 }
 
 #chat-toggle img{
@@ -171,75 +67,220 @@ body{
     border-radius:50%;
 }
 
-.quick-buttons{
+@keyframes bounce{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-8px);}
+}
+
+/* blink */
+@keyframes blink{
+    0%,97%,100%{transform:scale(1);}
+    98%{transform:scale(0.92);}
+    99%{transform:scale(1.05);}
+}
+
+.blink{
+    animation:blink 4s infinite;
+}
+
+/* ================= CHAT WINDOW ================= */
+#chat-widget{
+    position:fixed;
+    right:20px;
+    bottom:100px;
+
+    width:360px;
+    height:520px;
+
+    background:#1e293b;
+    border-radius:16px;
+
     display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:10px;
+    flex-direction:column;
+
+    overflow:hidden;
+    box-shadow:0 20px 40px rgba(0,0,0,.5);
+    z-index:999;
 }
 
-.quick-buttons button{
+.hidden{display:none !important;}
+
+/* ================= HEADER ================= */
+.chat-header{
+    background:#334155;
+    padding:12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:6px;
+
+    font-size:14px;
+}
+
+.chat-header button{
+    background:none;
     border:none;
-    background:#3b82f6;
     color:white;
-    padding:8px 12px;
-    border-radius:20px;
+    font-size:16px;
     cursor:pointer;
-    font-size:12px;
 }
 
+/* dropdown + speak */
 #mode-switch{
     background:#0f172a;
     color:white;
     border:1px solid #334155;
     border-radius:6px;
-    padding:4px;
+    padding:3px;
     font-size:12px;
 }
 
 #speak-btn{
-    margin-left:8px;
     background:#3b82f6;
     border:none;
     color:white;
+    padding:4px 6px;
     border-radius:6px;
-    padding:5px 8px;
     cursor:pointer;
 }
 
-/* blink animation for avatar */
-@keyframes blink {
-    0%, 97%, 100% { transform: scale(1); }
-    98% { transform: scale(0.92); }
-    99% { transform: scale(1.05); }
+/* ================= CHAT BOX ================= */
+#chat-box{
+    flex:1;
+    padding:12px;
+    overflow-y:auto;
+
+    display:flex;
+    flex-direction:column;
+    gap:10px;
 }
 
-.blink {
-    animation: blink 4s infinite;
+/* messages */
+.user-message,
+.bot-message{
+    padding:10px;
+    border-radius:12px;
+    max-width:80%;
+    white-space:pre-line;
+    font-size:14px;
 }
+
+.user-message{
+    background:#2563eb;
+    align-self:flex-end;
+}
+
+.bot-message{
+    background:#475569;
+    align-self:flex-start;
+}
+
+/* ================= QUICK BUTTONS ================= */
+.quick-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:8px;
+}
+
+.quick-buttons button{
+    background:#3b82f6;
+    border:none;
+    color:white;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:11px;
+    cursor:pointer;
+}
+
+/* ================= INPUT ================= */
+.chat-input{
+    display:flex;
+    gap:8px;
+    padding:10px;
+    background:#334155;
+}
+
+.chat-input input{
+    flex:1;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    outline:none;
+    font-size:14px;
+}
+
+.chat-input button{
+    padding:10px 12px;
+    border:none;
+    background:#3b82f6;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+/* ================= MOBILE RESPONSIVE ================= */
+@media (max-width:600px){
+
+    #chat-widget{
+        width:92%;
+        height:70vh;
+        right:4%;
+        bottom:85px;
+        border-radius:14px;
+    }
+
+    #chat-toggle{
+        width:55px;
+        height:55px;
+        right:15px;
+        bottom:15px;
+    }
+
+    .hero{
+        padding:60px 6%;
+    }
+
+    .hero h1{
+        font-size:2rem;
+    }
+
+    .user-message,
+    .bot-message{
+        font-size:13px;
+    }
+
+    .chat-header{
+        font-size:12px;
+        flex-wrap:wrap;
+    }
+
+    .chat-input input{
+        font-size:13px;
+    }
+}
+
 </style>
 </head>
+
 <body>
 
 <section class="hero">
     <h1>Hello, I'm Farah 👋</h1>
-    <p>
-        Frontend Developer passionate about creating
-        beautiful web experiences.
-    </p>
+    <p>Frontend Developer passionate about creating beautiful web experiences.</p>
 </section>
 
-<!-- Floating Button -->
+<!-- FLOAT BUTTON -->
 <div id="chat-toggle">
-    <img src="asset/avatar.jpg"  alt="Hunn">
+    <img src="asset/avatar.jpg" alt="Hunn">
 </div>
 
-<!-- Chat Widget -->
+<!-- CHAT -->
 <div id="chat-widget" class="hidden">
 
     <div class="chat-header">
-        <span>Hunn The Assistant ☺️</span>
-        <button id="close-chat">✕</button>
+        <span>Hunn 🤍</span>
 
         <select id="mode-switch">
             <option value="cute">Cute 🤍</option>
@@ -248,12 +289,13 @@ body{
         </select>
 
         <button id="speak-btn">🔊</button>
+        <button id="close-chat">✕</button>
     </div>
 
     <div id="chat-box">
 
         <div class="bot-message">
-            Hi, I am Hunn👋 Ask me about skills, projects, or contact info.
+            Hi 👋 I'm Hunn, your portfolio assistant.
 
             <div class="quick-buttons">
                 <button onclick="quickAsk('skills')">Skills</button>
@@ -265,15 +307,8 @@ body{
     </div>
 
     <div class="chat-input">
-        <input
-            id="user-input"
-            type="text"
-            placeholder="Ask something..."
-        >
-
-        <button id="send-btn">
-            Send
-        </button>
+        <input id="user-input" placeholder="Ask something...">
+        <button id="send-btn">Send</button>
     </div>
 
 </div>
@@ -282,253 +317,156 @@ body{
 
 let portfolioData = null;
 
-/* Load JSON */
+/* MEMORY */
+let memory = JSON.parse(localStorage.getItem("hunn_memory")) || { name:null };
+
+let mode = "cute";
+
+/* LOAD DATA */
 fetch("data.json")
-.then(res => res.json())
+.then(r => r.json())
 .then(data => {
     portfolioData = data;
     autoGreet();
 });
 
-/* Elements */
+/* ELEMENTS */
 const chatToggle = document.getElementById("chat-toggle");
 const chatWidget = document.getElementById("chat-widget");
-const closeChat = document.getElementById("close-chat");
-
 const chatBox = document.getElementById("chat-box");
 const input = document.getElementById("user-input");
 const sendBtn = document.getElementById("send-btn");
+const closeBtn = document.getElementById("close-chat");
 
-/* Open / Close */
-chatToggle.addEventListener("click", () => {
-    chatWidget.classList.toggle("hidden");
-});
+/* OPEN CLOSE */
+chatToggle.onclick = () => chatWidget.classList.toggle("hidden");
+closeBtn.onclick = () => chatWidget.classList.add("hidden");
 
-closeChat.addEventListener("click", () => {
-    chatWidget.classList.add("hidden");
-});
-
-/* Message UI */
-function addMessage(text, type){
-
-    const div = document.createElement("div");
-
-    div.className =
-        type === "user"
-        ? "user-message"
-        : "bot-message";
-
-    div.textContent = text;
-
+/* ADD MESSAGE */
+function addMessage(text,type){
+    const div=document.createElement("div");
+    div.className=type==="user"?"user-message":"bot-message";
+    div.textContent=text;
     chatBox.appendChild(div);
-
-    chatBox.scrollTop =
-        chatBox.scrollHeight;
+    chatBox.scrollTop=chatBox.scrollHeight;
 }
 
-/* Bot Logic */
-function getResponse(message){
-
-    const msg = message.toLowerCase().trim();
-
-    // helper: safe access
-    const skills = portfolioData?.skills || [];
-    const projects = portfolioData?.projects || [];
-    const contact = portfolioData?.contact || {};
-
-    // ===== GREETING / SMALL TALK =====
-    if(msg.match(/hi|hello|hey/)){
-        return applyMode("Hello! I'm Hunn 🤍 How can I help you?");
-    }
-
-    if(msg.includes("how are you")){
-        return applyMode("I'm doing great inside this portfolio 😄 How about you?");
-    }
-
-    // ===== SKILLS =====
-    if(msg.match(/skill|stack|tech|technology/)){
-        return applyMode(
-            `My skills are:\n${skills.join(", ")}`
-        );
-    }
-
-    // ===== PROJECTS =====
-    if(msg.match(/project|work|portfolio|built/)){
-
-        return applyMode(
-            "Here are my projects:\n" +
-            projects.map(p => `• ${p.name}`).join("\n")
-        );
-    }
-
-    // ===== CONTACT =====
-    if(msg.match(/contact|email|reach|hire/)){
-        return applyMode(
-            `You can reach me at: ${contact.email}`
-        );
-    }
-
-    // ===== NAME =====
-    if(msg.match(/your name|who are you/)){
-        return applyMode(
-            `I'm Hunn 🤍, the portfolio assistant of ${portfolioData.name}`
-        );
-    }
-
-    // ===== ROLE =====
-    if(msg.match(/role|job|work as|what do you do/)){
-        return applyMode(
-            `${portfolioData.name} works as a ${portfolioData.role}`
-        );
-    }
-
-    // ===== SMART PROJECT FILTER (NEW) =====
-    if(msg.includes("javascript")){
-        const filtered = projects.filter(p =>
-            (p.description || "").toLowerCase().includes("javascript")
-        );
-
-        return applyMode(
-            filtered.length
-            ? "JavaScript projects:\n" + filtered.map(p => "• " + p.name).join("\n")
-            : "No specific JavaScript-tagged projects found."
-        );
-    }
-
-    // ===== DEFAULT FALLBACK (IMPROVED) =====
-    return applyMode(
-        "I didn’t fully understand that 🤍\nTry asking about:\n• Skills\n• Projects\n• Contact\n• Role"
-    );
-}
-
-/* Send */
-function sendMessage(){
-
-    const text = input.value.trim();
-
-    if(!text) return;
-
-    const lower = text.toLowerCase();
-
-    if(lower.includes("my name is")){
-        const name = text.split("is")[1]?.trim();
-        memory.name = name;
-        localStorage.setItem("hunn_memory", JSON.stringify(memory));
-    }
-
-    addMessage(text,"user");
-    input.value = "";
-
-    setTimeout(() => {
-        addMessage(
-            getResponse(text),
-            "bot"
-        );
-    },500);
-}
-
-/* Quick Buttons */
-function quickAsk(text){
-
-    input.value = text;
-    sendMessage();
-}
-
-sendBtn.addEventListener(
-    "click",
-    sendMessage
-);
-
-input.addEventListener(
-    "keypress",
-    e => {
-        if(e.key === "Enter"){
-            sendMessage();
-        }
-    }
-);
-
-let memory = JSON.parse(localStorage.getItem("hunn_memory")) || {
-    name: null,
-    lastChat: null
-};
-
-let mode = "cute";
-
-function autoGreet(){
-
-    const hour = new Date().getHours();
-
-    let greet = "";
-
-    if(hour < 12) greet = "Good morning ☀️";
-    else if(hour < 18) greet = "Good afternoon 🌤️";
-    else greet = "Good evening 🌙";
-
-    setTimeout(() => {
-
-        let text = "";
-
-        if(memory.name){
-            text = `${greet} ${memory.name} 👋\nI'm Hunn, welcome back!`;
-        } else {
-            text = `${greet} 👋\nI'm Hunn, nice to meet you!`;
-        }
-
-        addMessage(text, "bot");
-
-    }, 800);
-}
-
+/* MODE */
 function applyMode(text){
 
-    if(mode === "cute"){
-        return text + " 🤍";
-    }
-
-    if(mode === "sarcastic"){
-        return text + " ...obviously 😏";
-    }
-
-    if(mode === "pro"){
-        return text;
-    }
+    if(mode==="cute") return text+" 🤍";
+    if(mode==="sarcastic") return text+" 😏";
+    if(mode==="pro") return text;
 
     return text;
 }
 
-document.getElementById("mode-switch")
-.addEventListener("change", (e) => {
-    mode = e.target.value;
+/* BOT */
+function getResponse(msg){
+
+    msg = msg.toLowerCase();
+
+    const skills = portfolioData?.skills || [];
+    const projects = portfolioData?.projects || [];
+    const contact = portfolioData?.contact || {};
+
+    if(msg.match(/hi|hello|hey/))
+        return applyMode("Hello! I'm Hunn 🤍");
+
+    if(msg.includes("skill"))
+        return applyMode("Skills: "+skills.join(", "));
+
+    if(msg.includes("project"))
+        return applyMode(
+            projects.map(p=>"• "+p.name).join("\n")
+        );
+
+    if(msg.includes("contact"))
+        return applyMode("Email: "+contact.email);
+
+    return applyMode("Try asking skills, projects or contact.");
+}
+
+/* SEND */
+function sendMessage(){
+
+    const text = input.value.trim();
+    if(!text) return;
+
+    if(text.includes("my name is")){
+        memory.name = text.split("is")[1]?.trim();
+        localStorage.setItem("hunn_memory",JSON.stringify(memory));
+    }
+
+    addMessage(text,"user");
+    input.value="";
+
+    setTimeout(()=>{
+        addMessage(getResponse(text),"bot");
+    },500);
+}
+
+/* QUICK */
+function quickAsk(t){
+    input.value=t;
+    sendMessage();
+}
+
+/* ENTER */
+sendBtn.onclick=sendMessage;
+input.addEventListener("keypress",e=>{
+    if(e.key==="Enter") sendMessage();
 });
 
+/* MODE SWITCH */
+document.getElementById("mode-switch")
+.addEventListener("change",e=>{
+    mode=e.target.value;
+});
+
+/* SPEAK */
 document.getElementById("speak-btn")
-.addEventListener("click", () => {
-
+.addEventListener("click",()=>{
     const last = chatBox.lastElementChild;
-
     if(!last) return;
 
     const msg = new SpeechSynthesisUtterance(
         last.textContent
     );
 
-    msg.rate = 1;
-    msg.pitch = 1;
-
     speechSynthesis.speak(msg);
 });
 
-setInterval(() => {
-    document.getElementById("chat-toggle")
-    .classList.add("blink");
+/* GREETING */
+function autoGreet(){
 
-    setTimeout(() => {
-        document.getElementById("chat-toggle")
-        .classList.remove("blink");
-    }, 500);
+    const hour=new Date().getHours();
 
-}, 5000);
+    let greet="";
+
+    if(hour<12)greet="Good morning ☀️";
+    else if(hour<18)greet="Good afternoon 🌤️";
+    else greet="Good evening 🌙";
+
+    setTimeout(()=>{
+
+        let text = memory.name
+        ? `${greet} ${memory.name} 👋 I'm Hunn again!`
+        : `${greet} 👋 I'm Hunn!`;
+
+        addMessage(text,"bot");
+
+    },800);
+}
+
+/* BLINK */
+setInterval(()=>{
+    chatToggle.classList.add("blink");
+    setTimeout(()=>{
+        chatToggle.classList.remove("blink");
+    },500);
+},5000);
+
 </script>
 
 </body>
