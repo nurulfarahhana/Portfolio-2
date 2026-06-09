@@ -1,32 +1,136 @@
 {
-  "name": "Hafiz",
-  "role": "Frontend Developer",
+"name": "Farah Hana",
+"role": "Frontend Developer",
 
-  "skills": [
-    "HTML",
-    "CSS",
-    "JavaScript",
-    "React",
-    "Tailwind CSS"
-  ],
+"summary": "Frontend Developer with experience in .NET development, web development, and building interactive applications. Passionate about creating user-friendly digital experiences and continuously improving technical skills.",
 
-  "projects": [
-    {
-      "name": "Portfolio Website",
-      "description": "Personal portfolio website."
-    },
-    {
-      "name": "Task Manager App",
-      "description": "Task tracking web application."
-    },
-    {
-      "name": "Weather Dashboard",
-      "description": "Weather app using public APIs."
-    }
-  ],
+"skills": [
+"VB.NET",
+".NET Framework 4.5",
+"MSSQL",
+"JavaScript",
+"HTML",
+"CSS",
+"Bootstrap",
+"Laravel",
+"PHP",
+"LINQ",
+"Crystal Reports",
+"Unity 3D",
+"Blender",
+"Vuforia",
+"Git",
+"Gitea"
+],
 
-  "contact": {
-    "email": "farah@example.com",
-    "github": "github.com/farah"
-  }
+"workExperience": [
+{
+"company": "CMGI Berhad",
+"position": "Junior .NET Developer",
+"startDate": "2023-01",
+"endDate": "2025-06",
+"description": [
+"Developed and maintained client management systems using VB.NET and MSSQL.",
+"Created responsive front-end features using VB.NET, JavaScript, and HTML.",
+"Worked closely with QC teams to identify and fix bugs.",
+"Participated in code reviews, team discussions, and software improvements.",
+"Improved debugging and problem-solving skills through mentorship."
+],
+"tools": [
+"VB.NET",
+"MSSQL",
+"JavaScript",
+"HTML",
+"LINQ",
+"Crystal Reports",
+"Gitea",
+".NET Framework 4.5"
+]
+},
+{
+"company": "Ministry of Health",
+"position": "Internship Trainee - Web Developer",
+"startDate": "2022",
+"endDate": "2022",
+"description": [
+"Learned full web development lifecycle from requirements gathering to deployment.",
+"Built and maintained web applications using Laravel.",
+"Worked with clients to understand requirements and provide updates."
+],
+"tools": [
+"Laravel",
+"PHP",
+"JavaScript",
+"HTML",
+"CSS",
+"Bootstrap"
+]
+}
+],
+
+"projects": [
+{
+"name": "AKRAB Monitoring System",
+"type": "Final Year Project",
+"description": "Web-based monitoring system for staff activity tracking and reporting.",
+"tools": [
+"PHP",
+"HTML",
+"CSS",
+"Bootstrap",
+"XAMPP",
+"VS Code"
+]
+},
+{
+"name": "Haunted House VR",
+"type": "Group Project",
+"description": "Virtual Reality mobile application developed and published.",
+"tools": [
+"Unity 3D",
+"Blender",
+"Canva"
+]
+},
+{
+"name": "Virtual Museum VR",
+"type": "Individual Project",
+"description": "Virtual Reality mobile application developed and published.",
+"tools": [
+"Unity 3D",
+"Blender",
+"Canva"
+]
+},
+{
+"name": "CardVAR Application",
+"type": "Augmented Reality Application",
+"description": "Augmented Reality mobile application with copyright registration through UPM.",
+"tools": [
+"Unity 3D",
+"Vuforia",
+"Blender",
+"Canva"
+]
+}
+],
+
+"volunteer": [
+{
+"organization": "Universiti Putra Malaysia",
+"role": "Volunteer - Free Market 4.0",
+"year": "2019",
+"description": [
+"Organized donated items for distribution.",
+"Assisted visitors in locating needed items.",
+"Supported crowd control and event operations."
+]
+}
+],
+
+"contact": {
+"email": "[farahhana196088@gmail.com](mailto:farahhana196088@gmail.com)",
+"github": "https://github.com/nurulfarahhana",
+"linkedin": " www.linkedin.com/in/nurul-farah-hanashafrizal-b37066251"
+}
 }

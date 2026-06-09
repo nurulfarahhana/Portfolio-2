@@ -318,16 +318,68 @@ body{
 let portfolioData = null;
 
 /* MEMORY */
-let memory = JSON.parse(localStorage.getItem("hunn_memory")) || { name:null };
+// let memory = JSON.parse(localStorage.getItem("hunn_memory")) || { name:null };
+let memory = JSON.parse(localStorage.getItem("hunn_memory")) || {
+    name:null
+};
+
+let chatContext = {
+    lastIntent:null,
+    lastProject:null
+};
 
 let mode = "cute";
+
+/* DETECT INTENT */
+function detectIntent(msg){
+
+    const skillsKeywords = [
+        "skill",
+        "skills",
+        "technology",
+        "technologies",
+        "tech",
+        "stack",
+        "framework"
+    ];
+
+    const projectKeywords = [
+        "project",
+        "projects",
+        "portfolio",
+        "work",
+        "build",
+        "built"
+    ];
+
+    const contactKeywords = [
+        "contact",
+        "email",
+        "github",
+        "reach"
+    ];
+
+    if(skillsKeywords.some(k=>msg.includes(k))){
+        return "skills";
+    }
+
+    if(projectKeywords.some(k=>msg.includes(k))){
+        return "projects";
+    }
+
+    if(contactKeywords.some(k=>msg.includes(k))){
+        return "contact";
+    }
+
+    return "unknown";
+}
 
 /* LOAD DATA */
 fetch("data.json")
 .then(r => r.json())
 .then(data => {
     portfolioData = data;
-    autoGreet();
+    // autoGreet();
 });
 
 /* ELEMENTS */
@@ -362,6 +414,7 @@ function applyMode(text){
 }
 
 /* BOT */
+
 function getResponse(msg){
 
     msg = msg.toLowerCase();
@@ -370,22 +423,71 @@ function getResponse(msg){
     const projects = portfolioData?.projects || [];
     const contact = portfolioData?.contact || {};
 
-    if(msg.match(/hi|hello|hey/))
-        return applyMode("Hello! I'm Hunn 🤍");
+    if(msg.match(/hi|hello|hey/)){
+        return applyMode("Hello! I'm Hunn");
+    }
 
-    if(msg.includes("skill"))
-        return applyMode("Skills: "+skills.join(", "));
+    const intent = detectIntent(msg);
 
-    if(msg.includes("project"))
+    if(intent==="skills"){
+
+        chatContext.lastIntent="skills";
+
         return applyMode(
-            projects.map(p=>"• "+p.name).join("\n")
+            `I work with ${skills.join(", ")}`
         );
+    }
 
-    if(msg.includes("contact"))
-        return applyMode("Email: "+contact.email);
+    if(intent==="projects"){
 
-    return applyMode("Try asking skills, projects or contact.");
+        chatContext.lastIntent="projects";
+
+        return applyMode(
+            projects.map((p,i)=>
+                `${i+1}. ${p.name}`
+            ).join("\n")
+        );
+    }
+
+    if(intent==="contact"){
+
+        chatContext.lastIntent="contact";
+
+        return applyMode(
+            `Email: ${contact.email}
+            GitHub: ${contact.github}`
+        );
+    }
+
+    return handleFollowUp(msg);
 }
+
+// function getResponse(msg){
+
+//     msg = msg.toLowerCase();
+
+//     const skills = portfolioData?.skills || [];
+//     const projects = portfolioData?.projects || [];
+//     const contact = portfolioData?.contact || {};
+
+//     if(msg.match(/hi|hello|hey/))
+//         return applyMode("Hello! I'm Hunn 🤍");
+
+//     if(msg.includes("skill"))
+//         return applyMode("Skills: "+skills.join(", "));
+
+//     if(msg.includes("project"))
+//         return applyMode(
+//             projects.map(p=>"• "+p.name).join("\n")
+//         );
+
+//     if(msg.includes("contact"))
+//         return applyMode("Email: "+contact.email);
+
+//     return applyMode("Try asking skills, projects or contact.");
+// }
+
+
 
 /* SEND */
 function sendMessage(){
@@ -438,26 +540,26 @@ document.getElementById("speak-btn")
 });
 
 /* GREETING */
-function autoGreet(){
+// function autoGreet(){
 
-    const hour=new Date().getHours();
+//     const hour=new Date().getHours();
 
-    let greet="";
+//     let greet="";
 
-    if(hour<12)greet="Good morning ☀️";
-    else if(hour<18)greet="Good afternoon 🌤️";
-    else greet="Good evening 🌙";
+//     if(hour<12)greet="Good morning ☀️,";
+//     else if(hour<18)greet="Good afternoon 🌤️,";
+//     else greet="Good evening 🌙,";
 
-    setTimeout(()=>{
+//     setTimeout(()=>{
 
-        let text = memory.name
-        ? `${greet} ${memory.name} 👋 I'm Hunn again!`
-        : `${greet} 👋 I'm Hunn!`;
+//         let text = memory.name
+//         ? `${greet} ${memory.name} 👋 I'm Hunn again!`
+//         : `${greet} 👋 I'm Hunn!`;
 
-        addMessage(text,"bot");
+//         addMessage(text,"bot");
 
-    },800);
-}
+//     },800);
+// }
 
 /* BLINK */
 setInterval(()=>{
@@ -466,6 +568,77 @@ setInterval(()=>{
         chatToggle.classList.remove("blink");
     },500);
 },5000);
+
+/* FOLLOW UP */
+function handleFollowUp(msg){
+
+    const projects = portfolioData?.projects || [];
+
+    if(
+        chatContext.lastIntent==="projects"
+    ){
+
+        if(
+            msg.includes("first") ||
+            msg.includes("1")
+        ){
+
+            const project = projects[0];
+
+            chatContext.lastProject = project;
+
+            return applyMode(
+                `${project.name}
+${project.description}`
+            );
+        }
+
+        if(
+            msg.includes("second") ||
+            msg.includes("2")
+        ){
+
+            const project = projects[1];
+
+            chatContext.lastProject = project;
+
+            return applyMode(
+                `${project.name}
+${project.description}`
+            );
+        }
+
+        if(
+            msg.includes("third") ||
+            msg.includes("3")
+        ){
+
+            const project = projects[2];
+
+            chatContext.lastProject = project;
+
+            return applyMode(
+                `${project.name}
+${project.description}`
+            );
+        }
+    }
+
+    if(
+        msg.includes("more") &&
+        chatContext.lastProject
+    ){
+
+        return applyMode(
+            `Project: ${chatContext.lastProject.name}
+${chatContext.lastProject.description}`
+        );
+    }
+
+    return applyMode(
+        "I didn't quite understand. Try asking about skills, projects or contact."
+    );
+}
 
 </script>
 
