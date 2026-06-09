@@ -126,6 +126,16 @@ body{
     cursor:pointer;
 }
 
+.chat-actions {
+    display: flex;
+    gap: 2px; /* rapatkan speaker & X */
+}
+
+.chat-actions button {
+    padding: 4px 6px;
+    border-radius: 6px;
+}
+
 /* dropdown + speak */
 #mode-switch{
     background:#0f172a;
@@ -282,14 +292,16 @@ body{
     <div class="chat-header">
         <span>Hunn 🤍</span>
 
-        <select id="mode-switch">
+        <!-- <select id="mode-switch">
             <option value="cute">Cute 🤍</option>
             <option value="sarcastic">Sarcastic 😏</option>
             <option value="pro">Pro 👔</option>
-        </select>
+        </select> -->
 
-        <button id="speak-btn">🔊</button>
-        <button id="close-chat">✕</button>
+        <div id = "chat-actions">
+            <button id="speak-btn">🔊</button>
+            <button id="close-chat">✕</button>
+        </div>
     </div>
 
     <div id="chat-box">
@@ -406,8 +418,8 @@ function addMessage(text,type){
 /* MODE */
 function applyMode(text){
 
-    if(mode==="cute") return text+" 🤍";
-    if(mode==="sarcastic") return text+" 😏";
+    if(mode==="cute") return text;
+    if(mode==="sarcastic") return text;
     if(mode==="pro") return text;
 
     return text;
@@ -455,7 +467,8 @@ function getResponse(msg){
 
         return applyMode(
             `Email: ${contact.email}
-            GitHub: ${contact.github}`
+            GitHub: ${contact.github}
+            Linkedin: ${contact.linkedin}`
         );
     }
 
@@ -521,23 +534,38 @@ input.addEventListener("keypress",e=>{
 });
 
 /* MODE SWITCH */
-document.getElementById("mode-switch")
-.addEventListener("change",e=>{
-    mode=e.target.value;
-});
+// document.getElementById("mode-switch")
+// .addEventListener("change",e=>{
+//     mode=e.target.value;
+// });
 
 /* SPEAK */
 document.getElementById("speak-btn")
-.addEventListener("click",()=>{
+.addEventListener("click", () => {
+
+    speechSynthesis.cancel(); // IMPORTANT reset queue
+
     const last = chatBox.lastElementChild;
     if(!last) return;
 
-    const msg = new SpeechSynthesisUtterance(
-        last.textContent
-    );
+    const msg = new SpeechSynthesisUtterance(last.textContent);
+
+    msg.lang = "en-US"; // atau "ms-MY"
 
     speechSynthesis.speak(msg);
 });
+
+// document.getElementById("speak-btn")
+// .addEventListener("click",()=>{
+//     const last = chatBox.lastElementChild;
+//     if(!last) return;
+
+//     const msg = new SpeechSynthesisUtterance(
+//         last.textContent
+//     );
+
+//     speechSynthesis.speak(msg);
+// });
 
 /* GREETING */
 // function autoGreet(){
