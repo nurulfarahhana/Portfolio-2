@@ -549,7 +549,6 @@ document.getElementById("speak-btn")
     if(!last) return;
 
     const msg = new SpeechSynthesisUtterance(last.textContent);
-
     msg.lang = "en-US"; // atau "ms-MY"
 
     speechSynthesis.speak(msg);
@@ -601,18 +600,14 @@ setInterval(()=>{
 function handleFollowUp(msg){
 
     const projects = portfolioData?.projects || [];
-
     if(
         chatContext.lastIntent==="projects"
     ){
-
         if(
             msg.includes("first") ||
             msg.includes("1")
         ){
-
             const project = projects[0];
-
             chatContext.lastProject = project;
 
             return applyMode(
@@ -625,9 +620,7 @@ ${project.description}`
             msg.includes("second") ||
             msg.includes("2")
         ){
-
             const project = projects[1];
-
             chatContext.lastProject = project;
 
             return applyMode(
@@ -640,9 +633,7 @@ ${project.description}`
             msg.includes("third") ||
             msg.includes("3")
         ){
-
             const project = projects[2];
-
             chatContext.lastProject = project;
 
             return applyMode(
@@ -656,13 +647,11 @@ ${project.description}`
         msg.includes("more") &&
         chatContext.lastProject
     ){
-
         return applyMode(
             `Project: ${chatContext.lastProject.name}
 ${chatContext.lastProject.description}`
         );
     }
-
     return applyMode(
         "I didn't quite understand. Try asking about skills, projects or contact."
     );
