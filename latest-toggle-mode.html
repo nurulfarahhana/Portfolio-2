@@ -1227,11 +1227,12 @@
                         - <span class='text-brand-400'>'clear'</span>: Cleanse terminal window entries.<br>
                         - <span class='text-brand-400'>'contact'</span>: Print digital correspondence methods.`;
                     } else if (query === 'about') {
-                        systemLine.innerText = "Nurul Farah Hana: Software Engineer with over 3 years of .NET & MSSQL experience, combined with creative AR/VR expertise from Universiti Putra Malaysia (UPM).";
+                        systemLine.innerHTML = "Nurul Farah Hana: Software developer with over 3+ years of full-stack experience using VB.NET, MSSQL, HTML, and JavaScript. Skilled in building and maintaining web-based management systems, particularly in the F&B sector. Strong in debugging, performance tuning, and adapting to new technologies. Passionate about writing clean, efficient code and continuously improving through hands-on learning."
+                        // Nurul Farah Hana: Software Engineer with over 3 years of .NET & MSSQL experience, combined with creative AR/VR expertise from Universiti Putra Malaysia (UPM).";
                     } else if (query === 'stats') {
-                        systemLine.innerText = "Engine Status: Stable. System Stack: VB.NET, PHP, Laravel, MSSQL, Unity 3D, Blender. Active Copyright: 1.";
+                        systemLine.innerHTML = "Engine Status: Stable. System Stack: VB.NET, PHP, Laravel, MSSQL, Unity 3D, Blender. <br> Active Copyright: 1.";
                     } else if (query === 'contact') {
-                        systemLine.innerText = "Transmission channels: Mail (farahhana196088@gmail.com). Phone: +60172884192. LinkedIn: link in footer.";
+                        systemLine.innerHTML = "Transmission channels: Mail (farahhana196088@gmail.com). <br> Phone: +60172884192. <br> LinkedIn: link in footer.";
                     } else if (query === 'clear') {
                         content.querySelectorAll('div, p').forEach((child, index) => {
                             if (index > 1 && child !== terminalInput.parentNode) {
