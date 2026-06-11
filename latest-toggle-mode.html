@@ -1028,46 +1028,126 @@
         // =============================================
         // MULTIPAGE SPA ROUTER
         // =============================================
-        function navigateTo(targetView) {
-            document.querySelectorAll('.view-section').forEach(view => {
-                view.classList.add('hidden');
-            });
+        function toggleChatbot() {
+            const chatWindow = document.getElementById('chatbot-window');
+            const toggleIcon = document.getElementById('chatbot-toggle-icon');
+            const notification = document.getElementById('chatbot-notification');
             
-            const targetElement = document.getElementById(`view-${targetView}`);
-            if (targetElement) {
-                targetElement.classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+            chatbotOpen = !chatbotOpen;
+            
+            if (chatbotOpen) {
+                chatWindow.classList.remove('hidden');
+                // Hide notification badge once opened
+                if (notification) notification.classList.add('hidden');
+                
+                // Toggle lucide symbol representing open state
+                toggleIcon.setAttribute('data-lucide', 'x');
+                // Focus chatbot input
+                document.getElementById('chatbot-input').focus();
+            } else {
+                chatWindow.classList.add('hidden');
+                toggleIcon.setAttribute('data-lucide', 'sparkles');
             }
-
-            // Update active header styling highlights
-            document.querySelectorAll('.nav-link').forEach(link => {
-                if (link.getAttribute('data-nav') === targetView) {
-                    link.classList.add('bg-brand-500/10', 'text-brand-600', 'dark:text-brand-400');
-                    link.classList.remove('text-slate-600', 'dark:text-slate-300');
-                } else {
-                    link.classList.remove('bg-brand-500/10', 'text-brand-600', 'dark:text-brand-400');
-                    link.classList.add('text-slate-600', 'dark:text-slate-300');
-                }
-            });
-
-            document.getElementById('mobile-menu').classList.add('hidden');
-            const menuIcon = document.getElementById('menu-icon');
-            menuIcon.setAttribute('data-lucide', 'menu');
             lucide.createIcons();
         }
 
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const icon = document.getElementById('menu-icon');
-            const isOpen = !menu.classList.contains('hidden');
-            
-            if (isOpen) {
-                menu.classList.add('hidden');
-                icon.setAttribute('data-lucide', 'menu');
-            } else {
-                menu.classList.remove('hidden');
-                icon.setAttribute('data-lucide', 'x');
+        function askQuickQuestion(questionText) {
+            document.getElementById('chatbot-input').value = questionText;
+            sendChatbotMessage();
+        }
+
+        function handleChatbotInputKey(event) {
+            if (event.key === 'Enter') {
+                sendChatbotMessage();
             }
+        }
+
+        async function sendChatbotMessage() {
+            const inputEl = document.getElementById('chatbot-input');
+            const userText = inputEl.value.trim();
+            if (!userText) return;
+
+            inputEl.value = "";
+            appendMessageToChat('user', userText);
+
+            // Add user turn to context history
+            chatbotHistory.push({ role: "user", parts: [{ text: userText }] });
+
+            // Display floating typing animator
+            const typingIndicator = appendTypingIndicator();
+
+            try {
+                // Sila isi API Key Google Gemini anda di sini sekiranya menguji secara lokal
+                const apiKey = ""; 
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: chatbotHistory,
+                    systemInstruction: {
+                        parts: [{ text: chatbotSystemInstruction }]
+                    }
+                };
+
+                // Perform exponential backoff retry loop safely
+                let response = null;
+                let delay = 1000;
+                for (let retry = 0; retry < 3; retry++) {
+                    try {
+                        response = await fetch(apiUrl, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(payload)
+                        });
+                        if (response.ok) break;
+                    } catch (e) {
+                        if (retry === 2) throw e;
+                    }
+                    await new Promise(r => setTimeout(r, delay));
+                    delay *= 2;
+                }
+
+                if (!response || !response.ok) {
+                    throw new Error("Sistem menghadapi masalah talian. Sila cuba seketika lagi!");
+                }
+
+                const result = await response.json();
+                const aiText = result.candidates?.[0]?.content?.parts?.[0]?.text || "Maaf, sistem tidak dapat memproses maklumat tersebut.";
+
+                // Remove typing prompt and render real answer
+                typingIndicator.remove();
+                appendMessageToChat('bot', aiText);
+
+                // Add bot's answer to history stream
+                chatbotHistory.push({ role: "model", parts: [{ text: aiText }] });
+
+            } catch (error) {
+                console.error(error);
+                typingIndicator.remove();
+                appendMessageToChat('bot', "Maaf, saya tidak dapat bersambung dengan pelayan AI. Sila semak sambungan rangkaian anda!");
+            }
+        }
+
+        function appendMessageToChat(sender, text) {
+            const container = document.getElementById('chatbot-messages');
+            const wrapper = document.createElement('div');
+            wrapper.className = "flex gap-2.5 items-start" + (sender === 'user' ? " flex-row-reverse" : "");
+
+            const avatarHtml = sender === 'user' 
+                ? `<div class="w-6 h-6 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center shrink-0 mt-0.5"><i data-lucide="user" class="w-3.5 h-3.5"></i></div>`
+                : `<div class="w-6 h-6 rounded bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center shrink-0 mt-0.5"><i data-lucide="bot" class="w-3.5 h-3.5"></i></div>`;
+
+            const messageBubble = document.createElement('div');
+            messageBubble.className = sender === 'user'
+                ? "bg-brand-500 text-slate-950 p-3 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm font-medium"
+                : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-darkBorder p-3 rounded-2xl rounded-tl-none text-slate-800 dark:text-slate-300 max-w-[85%] shadow-sm leading-relaxed";
+
+            // Support linebreaks and bullets cleanly
+            messageBubble.innerHTML = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            wrapper.innerHTML = avatarHtml;
+            wrapper.appendChild(messageBubble);
+            container.appendChild(wrapper);
+
             lucide.createIcons();
         }
 
