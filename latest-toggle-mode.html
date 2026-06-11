@@ -109,6 +109,11 @@
             pointer-events: none;
             transition: width 0.2s, height 0.2s, background-color 0.2s;
         }
+
+        /* #chatbot-messages {
+            scrollbar-width: thin;
+            -webkit-overflow-scrolling: touch;
+        } */
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-darkBg dark:text-slate-100 font-sans transition-colors duration-300 overflow-x-hidden selection:bg-brand-500 selection:text-black">
@@ -840,9 +845,9 @@
         </button>
 
         <!-- Chat window container (glassmorphism look & responsive sizing) -->
-        <div id="chatbot-window" class="absolute bottom-20 right-0 w-[350px] sm:w-[400px] h-[520px] bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-2xl shadow-2xl overflow-hidden hidden flex-col transition-all duration-300 transform scale-95 translate-y-4 z-50">
+        <!-- <div id="chatbot-window" class="absolute bottom-20 right-0 w-[350px] sm:w-[400px] h-[520px] bg-white dark:bg-darkCard border border-slate-200 dark:border-darkBorder rounded-2xl shadow-2xl overflow-hidden hidden flex-col transition-all duration-300 transform scale-95 translate-y-4 z-50"> -->
             <!-- Header -->
-            <div class="p-4 bg-slate-50 dark:bg-slate-900/80 border-b border-slate-200 dark:border-darkBorder flex items-center justify-between">
+            <!-- <div class="p-4 bg-slate-50 dark:bg-slate-900/80 border-b border-slate-200 dark:border-darkBorder flex items-center justify-between">
                 <div class="flex items-center gap-2.5">
                     <div class="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center text-slate-950">
                         <i data-lucide="bot" class="w-4 h-4"></i>
@@ -857,12 +862,12 @@
                 <button onclick="toggleChatbot()" class="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
                     <i data-lucide="minus" class="w-4 h-4"></i>
                 </button>
-            </div>
+            </div> -->
 
             <!-- Messages Stream Area -->
-            <div id="chatbot-messages" class="flex-1 p-4 overflow-y-auto min-h-0 overscroll-y-contain space-y-4 bg-slate-50/50 dark:bg-slate-950/20 text-sm" style="-webkit-overflow-scrolling: touch;">
+            <!-- <div id="chatbot-messages" class="flex-1 p-4 overflow-y-auto min-h-0 overscroll-y-contain space-y-4 bg-slate-50/50 dark:bg-slate-950/20 text-sm" style="-webkit-overflow-scrolling: touch;"> -->
                 <!-- Welcome greeting -->
-                <div class="flex gap-2.5 items-start">
+                <!-- <div class="flex gap-2.5 items-start">
                     <div class="w-6 h-6 rounded bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center shrink-0 mt-0.5">
                         <i data-lucide="bot" class="w-3.5 h-3.5"></i>
                     </div>
@@ -870,24 +875,24 @@
                         Hai! Saya asisten pintar Farah Hana. Tanya apa-apa tentang pengalaman kerja, projek inovasi (seperti <strong>CardVAR</strong>), kelayakan akademik, ataupun jadual kekosongan kerjaya beliau!
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Pre-Canned Quick Questions -->
-            <div class="px-4 pb-2 pt-1 flex flex-wrap gap-1.5 border-t border-slate-100 dark:border-slate-900 bg-white dark:bg-darkCard">
+            <!-- <div class="px-4 pb-2 pt-1 flex flex-wrap gap-1.5 border-t border-slate-100 dark:border-slate-900 bg-white dark:bg-darkCard">
                 <button onclick="askQuickQuestion('What are your main programming skills?')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-darkBorder bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400 text-[11px] font-mono hover:border-brand-500 hover:text-brand-500 dark:hover:text-brand-400 transition-all">💻 Skills & Stack</button>
                 <button onclick="askQuickQuestion('Tell me about your patented CardVAR app.')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-darkBorder bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400 text-[11px] font-mono hover:border-brand-500 hover:text-brand-500 dark:hover:text-brand-400 transition-all">🕶️ CardVAR AR Project</button>
                 <button onclick="askQuickQuestion('Are you looking for opportunities or hiring?')" class="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-darkBorder bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400 text-[11px] font-mono hover:border-brand-500 hover:text-brand-500 dark:hover:text-brand-400 transition-all">💼 Hiring/Careers</button>
-            </div>
+            </div> -->
 
             <!-- Input area -->
-            <div class="p-3 border-t border-slate-200 dark:border-darkBorder bg-slate-50 dark:bg-slate-900/50 flex gap-2">
+            <!-- <div class="p-3 border-t border-slate-200 dark:border-darkBorder bg-slate-50 dark:bg-slate-900/50 flex gap-2">
                 <input id="chatbot-input" onkeydown="handleChatbotInputKey(event)" type="text" placeholder="Type a message or question..." class="flex-1 bg-white dark:bg-slate-950 border border-slate-200 dark:border-darkBorder rounded-xl px-4 py-2 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-brand-500">
                 <button onclick="sendChatbotMessage()" class="p-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white dark:text-slate-950 flex items-center justify-center transition-all shadow-sm">
                     <i data-lucide="send" class="w-4 h-4"></i>
                 </button>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- FOOTER -->
     <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-darkBorder py-12 mt-28">
@@ -1253,7 +1258,7 @@
 
             try {
                 // Sila isi API Key Google Gemini anda di sini sekiranya menguji secara lokal
-                const apiKey = "YOUR_API_KEYS"; 
+                const apiKey = "YOUR_API_KEY_HERE"; 
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
                 const payload = {
@@ -1303,7 +1308,7 @@
         }
 
         function appendMessageToChat(sender, text) {
-            const container = document.getElementById('chatbot-messages');
+            // const container = document.getElementById('chatbot-messages');
             const wrapper = document.createElement('div');
             wrapper.className = "flex gap-2.5 items-start" + (sender === 'user' ? " flex-row-reverse" : "");
 
@@ -1329,7 +1334,7 @@
         }
 
         function appendTypingIndicator() {
-            const container = document.getElementById('chatbot-messages');
+            // const container = document.getElementById('chatbot-messages');
             const wrapper = document.createElement('div');
             wrapper.className = "flex gap-2.5 items-start";
             wrapper.id = "typing-indicator-node";
